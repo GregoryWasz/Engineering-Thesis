@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
+import models.user_model  # noqa
 from db.database import Base
-import models.user_model # noqa
 
 
 class Product(Base):

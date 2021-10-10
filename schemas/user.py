@@ -19,3 +19,24 @@ class UserRead(UserBase):
 
 class User(UserBase):
     pass
+
+
+class UserUpdateEmail(BaseModel):
+    email: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserUpdateUsername(BaseModel):
+    username: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserUpdatePassword(BaseModel):
+    password: str
+
+    class Config:
+        orm_mode = True

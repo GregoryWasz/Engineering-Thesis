@@ -1,12 +1,12 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
+import models.achievement_model  # noqa
+import models.body_weight_measure_model  # noqa
+import models.comment_model  # noqa
+import models.post_model  # noqa
+import models.product_model  # noqa
 from db.database import Base
-import models.achievement_model # noqa
-import models.product_model # noqa
-import models.post_model # noqa
-import models.comment_model # noqa
-import models.body_weight_measure_model # noqa
 
 
 class User(Base):

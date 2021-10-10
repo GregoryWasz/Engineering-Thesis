@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
+import models.post_model  # noqa
+import models.user_model  # noqa
 from db.database import Base
-import models.user_model # noqa
-import models.post_model # noqa
 
 
 class Comment(Base):
