@@ -21,6 +21,7 @@ def get_single_body_weight(body_weight_id: int, db: Session, current_user: user_
 
 def create_body_weight_measurement(body_weight_measure: BodyWeightMeasureCreate, db: Session,
                                    current_user: user_model.User):
+    # TODO validate inputs
     return create_body_weight_measurement_in_db(db, current_user.user_id, body_weight_measure)
 
 

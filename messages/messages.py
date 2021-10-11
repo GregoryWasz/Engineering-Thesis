@@ -9,3 +9,6 @@ EMAIL_ALREADY_EXIST_ERROR = {ERROR: 'Email already exist'}
 
 BODY_MEASUREMENT_DELETE_MESSAGE = {MESSAGE: "Body measurement deleted successfully"}
 BODY_MEASUREMENT_DELETE_ERROR = {ERROR: "Body measurement with this id not exist"}
+
+PRODUCT_DELETE_MESSAGE = {MESSAGE: "Product deleted successfully"}
+PRODUCT_DELETE_ERROR = {ERROR: "Product with this id not exist"}

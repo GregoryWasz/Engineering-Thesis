@@ -8,7 +8,7 @@ from schemas import user
 
 
 def create_user(db: Session, user: user.UserCreate):
-    db_user = user_model.User(username=user.username, password=user.password, email=user.email)
+    db_user = user_model.User(**user.__dict__)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -27,6 +27,7 @@ def get_user_by_email(db: Session, email: str):
     return db.query(user_model.User).filter(user_model.User.email == email).first()
 
 
+# TODO change directory to common
 def apply_changes_in_db(db: Session):
     try:
         db.commit()
@@ -35,11 +36,13 @@ def apply_changes_in_db(db: Session):
     return True
 
 
+# TODO change directory to common
 def apply_changes_and_refresh_db(db: Session, instance: Any):
     apply_changes_in_db(db)
     db.refresh(instance)
 
 
+# TODO change directory to common
 def delete_user(db: Session, current_user):
     try:
         db.delete(current_user)

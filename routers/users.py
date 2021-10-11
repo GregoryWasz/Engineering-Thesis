@@ -17,8 +17,7 @@ user_router = APIRouter()
 
 @user_router.get("/", response_model=List[user.UserBase])
 def get_all_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = user_repository.get_users(db=db, skip=skip, limit=limit)
-    return users
+    return user_repository.get_users(db=db, skip=skip, limit=limit)
 
 
 @user_router.post("/", response_model=user.UserBase)

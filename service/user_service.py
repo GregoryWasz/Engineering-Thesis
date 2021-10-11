@@ -13,6 +13,7 @@ from service.authentication import hash_password
 def create_user_service(user: user.UserCreate, db: Session):
     _check_if_username_exist(db, user.username)
     _check_if_email_exist(db, user.email)
+    # TODO Validate inputs
 
     user.password = hash_password(user.password)
     return user_repository.create_user(db=db, user=user)
