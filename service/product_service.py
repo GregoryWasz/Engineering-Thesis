@@ -54,7 +54,6 @@ def update_product_date(id: int, product_date: ProductNewProductDate, current_us
 
 def update_product_calorific_value(id: int, product_calorific_value: ProductNewProductCalorificValue,
                                    current_user: user_model.User, db: Session):
-
     # TODO check if product exist
     product = get_product_by_user_id(id, current_user.user_id, db)
     product.product_calorific_value = product_calorific_value.product_calorific_value
