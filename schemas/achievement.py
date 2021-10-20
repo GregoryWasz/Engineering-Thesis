@@ -4,7 +4,16 @@ from pydantic import BaseModel
 
 
 class Achievement(BaseModel):
-    achievement_id: int
     achievement_name: str
     achievement_date: datetime
-    # user_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class AchievementCreate(Achievement):
+    pass
+
+
+class AchievementResponse(Achievement):
+    achievement_id: int

@@ -33,3 +33,8 @@ def delete_body_weight_measurement_from_db(db: Session, user_id: int, body_weigh
     except SQLAlchemyError:
         return False
     return True
+
+
+def get_measurement_count(db: Session, user_id: int):
+    return db.query(body_weight_measure_model.BodyWeightMeasure).filter(
+        body_weight_measure_model.BodyWeightMeasure.user_id == user_id).count()
