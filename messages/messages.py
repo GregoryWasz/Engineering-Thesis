@@ -15,3 +15,7 @@ PRODUCT_DELETE_ERROR = {ERROR: "Product with this id not exist"}
 
 NEW_ACHIEVEMENTS_MESSAGE = {MESSAGE: 'NEW ACHIEVEMENTS APPEARS!'}
 NO_NEW_ACHIEVEMENTS_MESSAGE = {MESSAGE: 'NO NEW ACHIEVEMENTS'}
+
+PERMISSION_ERROR = {ERROR: "You have no permission to make this change"}
+POST_NOT_EXIST_ERROR = {ERROR: "Post with this id not exist"}
+POST_DELETE_MESSAGE = {MESSAGE: "Post deleted successfully"}
