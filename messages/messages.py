@@ -12,3 +12,7 @@ BODY_MEASUREMENT_DELETE_ERROR = {ERROR: "Body measurement with this id not exist
 
 PRODUCT_DELETE_MESSAGE = {MESSAGE: "Product deleted successfully"}
 PRODUCT_DELETE_ERROR = {ERROR: "Product with this id not exist"}
+
+PERMISSION_ERROR = {ERROR: "You have no permission to make this change"}
+POST_NOT_EXIST_ERROR = {ERROR: "Post with this id not exist"}
+POST_DELETE_MESSAGE = {MESSAGE: "Post deleted successfully"}
