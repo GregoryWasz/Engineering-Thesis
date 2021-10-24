@@ -1,0 +1,32 @@
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from models import product_model
+from schemas.product import ProductCreate
+
+
+def get_products_for_user_id(user_id: int, db: Session):
+    return db.query(product_model.Product).filter(product_model.Product.user_id == user_id).all()
+
+
+def create_product_in_db(product: ProductCreate, user_id: int, db: Session):
+    db_product = product_model.Product(user_id=user_id, **product.__dict__)
+    db.add(db_product)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+
+def get_product_by_user_id(product_id: int, user_id: int, db: Session):
+    return db.query(product_model.Product).filter(product_model.Product.user_id == user_id,
+                                                  product_model.Product.product_id == product_id).first()
+
+
+def delete_product_by_id(product_id: int, user_id: int, db: Session):
+    try:
+        product = get_product_by_user_id(product_id, user_id, db)
+        db.delete(product)
+        db.commit()
+    except SQLAlchemyError:
+        return False
+    return True
