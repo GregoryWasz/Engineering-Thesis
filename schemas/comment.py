@@ -4,8 +4,20 @@ from pydantic import BaseModel
 
 
 class Comment(BaseModel):
-    comment_id: int
     comment_text: str
     comment_date: datetime
-    # user_id: int
-    # post_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class CommentResp(Comment):
+    comment_id: int
+
+
+class CommentCreate(Comment):
+    pass
+
+
+class CommentNewText(BaseModel):
+    comment_text: str

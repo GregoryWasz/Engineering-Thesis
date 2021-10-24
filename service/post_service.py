@@ -11,6 +11,7 @@ from repository.user_repository import apply_changes_and_refresh_db
 from schemas.post import PostCreate, PostNewTitle, PostNewText
 
 
+# TODO this not make a sense loop?
 def _raise_error_when_post_not_exist(post_id: int, db: Session):
     post = get_single_post_by_post_id_from_db(post_id, db)
 
@@ -42,6 +43,7 @@ def create_single_post(post: PostCreate, db: Session, current_user: user_model.U
 
 
 def get_single_post(post_id: int, db: Session):
+    # TODO this not make a sense loop?
     _raise_error_when_post_not_exist(post_id, db)
 
     return get_single_post_by_post_id_from_db(post_id, db)
@@ -49,7 +51,7 @@ def get_single_post(post_id: int, db: Session):
 
 def delete_post_with_id(post_id: int, db: Session, current_user: user_model.User):
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
-
+    # TODO delete all comments which belongs to post
     if delete_post_from_db(post_id, db):
         return POST_DELETE_MESSAGE
     return DATABASE_ERROR
