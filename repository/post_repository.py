@@ -29,3 +29,8 @@ def delete_post_from_db(post_id: int, db: Session):
     except SQLAlchemyError:
         return False
     return True
+
+
+def get_post_count_for_user_id(db: Session, user_id: int):
+    return db.query(post_model.Post).filter(
+        post_model.Post.user_id == user_id).count()

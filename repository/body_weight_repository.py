@@ -35,6 +35,6 @@ def delete_body_weight_measurement_from_db(db: Session, user_id: int, body_weigh
     return True
 
 
-def get_measurement_count(db: Session, user_id: int):
+def get_measurement_count_for_user_id(db: Session, user_id: int):
     return db.query(body_weight_measure_model.BodyWeightMeasure).filter(
         body_weight_measure_model.BodyWeightMeasure.user_id == user_id).count()

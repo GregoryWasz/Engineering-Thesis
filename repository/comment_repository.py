@@ -25,3 +25,8 @@ def delete_comment_from_db(comment_id: int, db: Session):
     except SQLAlchemyError:
         return False
     return True
+
+
+def get_comment_count_for_user_id(db: Session, user_id: int):
+    return db.query(comment_model.Comment).filter(
+        comment_model.Comment.user_id == user_id).count()

@@ -14,7 +14,7 @@ def get_achievement_count(db: Session, user_id: int):
         achievement_model.Achievement.user_id == user_id).count()
 
 
-def create_achievement(db: Session, user_id: int, achievement: AchievementCreate):
+def create_achievement_in_db(db: Session, user_id: int, achievement: AchievementCreate):
     db_achievement = achievement_model.Achievement(user_id=user_id, **achievement.__dict__)
     db.add(db_achievement)
     db.commit()
