@@ -16,12 +16,12 @@ from service.post_service import (
 posts = APIRouter()
 
 
-@posts.get("/", response_model=List[PostResp])
+@posts.get("", response_model=List[PostResp])
 def get_all_posts(db: Session = Depends(get_db)):
     return get_posts(db)
 
 
-@posts.post("/", response_model=PostResp)
+@posts.post("", response_model=PostResp)
 def create_post(post: PostCreate, db: Session = Depends(get_db),
                 current_user: user_model.User = Depends(get_current_user)):
     return create_single_post(post, db, current_user)

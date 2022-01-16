@@ -2,8 +2,10 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
+    user_id: int
     username: str
     email: str
+    calorie_limit: int
 
     class Config:
         orm_mode = True
@@ -37,6 +39,13 @@ class UserUpdateUsername(BaseModel):
 
 class UserUpdatePassword(BaseModel):
     password: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserUpdateCalorieLimit(BaseModel):
+    calorie_limit: int
 
     class Config:
         orm_mode = True

@@ -14,12 +14,12 @@ from service import product_service
 products = APIRouter()
 
 
-@products.get("/", response_model=List[ProductWithId])
+@products.get("", response_model=List[ProductWithId])
 def get_all_products(current_user: user_model.User = Depends(get_current_user), db: Session = Depends(get_db)):
     return product_service.get_all_products(current_user, db)
 
 
-@products.post("/", response_model=ProductWithId)
+@products.post("", response_model=ProductWithId)
 def create_products(product: ProductCreate, current_user: user_model.User = Depends(get_current_user),
                     db: Session = Depends(get_db)):
     return product_service.create_product(product, current_user, db)

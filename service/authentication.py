@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from config import ACCESS_TOKEN_EXPIRE_MINUTES
 from config import SECRET_KEY, ALGORITHM
+from messages.messages import INVALID_AUTHENTICATION
 from repository.user_repository import get_user
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -48,7 +49,7 @@ def get_access_token(form_data: OAuth2PasswordRequestForm, db: Session):
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail=INVALID_AUTHENTICATION,
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

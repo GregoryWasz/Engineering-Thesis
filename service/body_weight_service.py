@@ -21,7 +21,7 @@ def get_single_body_weight(body_weight_id: int, db: Session, current_user: user_
 
 def create_body_weight_measurement(body_weight_measure: BodyWeightMeasureCreate, db: Session,
                                    current_user: user_model.User):
-    # TODO validate inputs
+    # TODO validate BW > 0
     return create_body_weight_measurement_in_db(db, current_user.user_id, body_weight_measure)
 
 
@@ -36,6 +36,7 @@ def update_body_measurement_weight_amount(body_weight_id: int, new_weight_amount
                                           db: Session, current_user: user_model.User):
     _check_if_body_measurement_exist(body_weight_id, db, current_user)
 
+    # TODO validate BW > 0
     body_measurement = get_body_weight_measurement(db, current_user.user_id, body_weight_id)
     body_measurement.weight_amount = new_weight_amount.weight_amount
     apply_changes_and_refresh_db(db, body_measurement)

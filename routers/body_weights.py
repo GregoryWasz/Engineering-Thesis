@@ -17,7 +17,7 @@ from service.body_weight_service import (
 body_weight = APIRouter()
 
 
-@body_weight.get("/", response_model=List[BodyWeightMeasureWithId])
+@body_weight.get("", response_model=List[BodyWeightMeasureWithId])
 def get_all_weights_measurements(db: Session = Depends(get_db),
                                  current_user: user_model.User = Depends(get_current_user)):
     return get_all_body_weights(db, current_user)
@@ -29,7 +29,7 @@ def get_single_weight_measurement(id: int, db: Session = Depends(get_db),
     return get_single_body_weight(id, db, current_user)
 
 
-@body_weight.post("/", response_model=BodyWeightMeasure)
+@body_weight.post("", response_model=BodyWeightMeasure)
 def create_weight_measurement(body_weight_measure: BodyWeightMeasureCreate, db: Session = Depends(get_db),
                               current_user: user_model.User = Depends(get_current_user)):
     return create_body_weight_measurement(body_weight_measure, db, current_user)
