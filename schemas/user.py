@@ -11,7 +11,10 @@ class UserBase(BaseModel):
         orm_mode = True
 
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
+    username: str
+    email: str
+    calorie_limit: int
     password: str
 
 

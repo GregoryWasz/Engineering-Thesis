@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-
+from datetime import date
 from messages.messages import (
     PRODUCT_DELETE_MESSAGE, PRODUCT_DELETE_ERROR,
     PRODUCT_NAME_VALIDATION_ERROR,
@@ -7,7 +7,7 @@ from messages.messages import (
 from models import user_model
 from repository.product_repository import (
     get_products_for_user_id, create_product_in_db, get_product_by_user_id,
-    delete_product_by_id,
+    delete_product_by_id, get_products_for_user_id_with_date,
 )
 from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.product import ProductCreate, ProductNewProductName, ProductNewProductDate, ProductNewProductCalorificValue
@@ -17,6 +17,10 @@ from service.common_error_functions import _raise_http_exception, _check_if_calo
 
 def get_all_products(current_user: user_model.User, db: Session):
     return get_products_for_user_id(current_user.user_id, db)
+
+
+def get_daily_products(current_date: date, current_user: user_model.User, db: Session, ):
+    return get_products_for_user_id_with_date(current_date, current_user.user_id, db)
 
 
 def create_product(product: ProductCreate, current_user: user_model.User, db: Session):
