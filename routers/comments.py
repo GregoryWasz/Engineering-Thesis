@@ -7,8 +7,9 @@ from schemas.comment import (
     CommentResp, CommentCreate, CommentNewText,
 )
 from service.comment_service import (
-    create_single_comment, get_single_comment, delete_comment_with_id, update_comment_text,
+    create_single_comment, delete_comment_with_id, update_comment_text, get_comments_for_post,
 )
+from typing import List
 
 comments = APIRouter()
 
@@ -19,9 +20,9 @@ def create_comment(post_id: int, comment: CommentCreate, db: Session = Depends(g
     return create_single_comment(post_id, comment, db, current_user)
 
 
-@comments.get("/{comment_id:path}", response_model=CommentResp)
-def get_comment_with_id(comment_id: int, db: Session = Depends(get_db)):
-    return get_single_comment(comment_id, db)
+@comments.get("/{post_id:path}", response_model=List[CommentResp])
+def get_comments_for_post_with_id(post_id: int, db: Session = Depends(get_db)):
+    return get_comments_for_post(post_id, db)
 
 
 @comments.delete("/{comment_id:path}")
