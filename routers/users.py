@@ -9,7 +9,7 @@ from repository import user_repository
 from schemas import user
 from service.user_service import (
     create_user_service, delete_user_service, change_user_password, change_user_email,
-    change_user_username, change_user_calorie_limit
+    change_user_username, change_user_calorie_limit,
 )
 
 user_router = APIRouter()

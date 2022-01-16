@@ -1,17 +1,18 @@
-from sqlalchemy.orm import Session
 from datetime import date
+
+from sqlalchemy.orm import Session
+
 from messages.messages import (
     PRODUCT_DELETE_MESSAGE, PRODUCT_DELETE_ERROR,
     PRODUCT_NAME_VALIDATION_ERROR,
 )
 from models import user_model
+from repository.common_database_functions import apply_changes_and_refresh_db
 from repository.product_repository import (
     get_products_for_user_id, create_product_in_db, get_product_by_user_id,
     delete_product_by_id, get_products_for_user_id_with_date,
 )
-from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.product import ProductCreate, ProductNewProductName, ProductNewProductDate, ProductNewProductCalorificValue
-
 from service.common_error_functions import _raise_http_exception, _check_if_calorie_value_is_lower_than_0
 
 

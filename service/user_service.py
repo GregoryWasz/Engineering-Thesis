@@ -1,3 +1,5 @@
+import re
+
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
@@ -5,13 +7,11 @@ import repository.common_database_functions
 from messages.messages import (
     USER_ALREADY_EXIST_ERROR, EMAIL_ALREADY_EXIST_ERROR, DATABASE_ERROR,
     PASSWORD_CHANGE_MESSAGE, USER_DELETE_MESSAGE, USERNAME_VALIDATION_ERROR, EMAIL_VALIDATION_ERROR,
-    PASSWORD_VALIDATION_ERROR
+    PASSWORD_VALIDATION_ERROR,
 )
 from repository import user_repository
 from schemas import user
 from service.authentication import hash_password
-import re
-
 from service.common_error_functions import _raise_http_exception, _check_if_calorie_value_is_lower_than_0
 
 

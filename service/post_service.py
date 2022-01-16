@@ -6,11 +6,11 @@ from messages.messages import (
     TEXT_LENGTH_VALIDATION_ERROR,
 )
 from models import user_model
+from repository.common_database_functions import apply_changes_and_refresh_db
 from repository.post_repository import (
     get_posts_from_db, create_post_in_db, get_single_post_by_post_id_from_db,
     delete_post_from_db,
 )
-from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.post import PostCreate, PostNewTitle, PostNewText
 from service.common_error_functions import _raise_http_exception
 
@@ -85,4 +85,3 @@ def update_post_text(post_id: int, post_text: PostNewText, db: Session, current_
 def _validate_text_length(text):
     if len(text) < 3:
         _raise_http_exception(TEXT_LENGTH_VALIDATION_ERROR)
-

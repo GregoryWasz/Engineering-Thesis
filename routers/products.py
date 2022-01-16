@@ -1,5 +1,6 @@
-from typing import List
 from datetime import date
+from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -20,7 +21,8 @@ def get_all_products(current_user: user_model.User = Depends(get_current_user), 
 
 
 @products.get("/daily", response_model=List[ProductWithId])
-def get_daily_products(current_date: date, current_user: user_model.User = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_daily_products(current_date: date, current_user: user_model.User = Depends(get_current_user),
+                       db: Session = Depends(get_db)):
     return product_service.get_daily_products(current_date, current_user, db)
 
 

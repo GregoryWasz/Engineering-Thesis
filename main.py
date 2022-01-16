@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from db import database
 from db.database import engine
 from routers import users, authentication, body_weights, products, achievements, posts, comments
-from fastapi.middleware.cors import CORSMiddleware
 
 database.Base.metadata.create_all(bind=engine)
 

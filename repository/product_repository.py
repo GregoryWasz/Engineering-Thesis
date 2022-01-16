@@ -1,8 +1,8 @@
 from datetime import date
 
+from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 
 from models import product_model
 from schemas.product import ProductCreate
