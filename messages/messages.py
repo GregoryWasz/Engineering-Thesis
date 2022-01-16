@@ -31,3 +31,6 @@ INVALID_AUTHENTICATION = {ERROR: 'Incorrect username or password'}
 
 PRODUCT_NAME_VALIDATION_ERROR = {ERROR: 'Product name must be at least 4 characters'}
 TEXT_LENGTH_VALIDATION_ERROR = {ERROR: 'Text must be at least 4 characters'}
+
+BODY_MEASUREMENT_TO_LOW_ERROR = {ERROR: 'Provided value for body measurement must be higher than 0'}
+CALORIE_TO_LOW_ERROR = {ERROR: 'Provided value for calorie must be higher than 0'}

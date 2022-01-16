@@ -1,7 +1,10 @@
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
-from messages.messages import BODY_MEASUREMENT_DELETE_MESSAGE, BODY_MEASUREMENT_DELETE_ERROR
+from messages.messages import (
+    BODY_MEASUREMENT_DELETE_MESSAGE, BODY_MEASUREMENT_DELETE_ERROR,
+    BODY_MEASUREMENT_TO_LOW_ERROR,
+)
 from models import user_model
 from repository.body_weight_repository import (
     get_body_weight_measurements, get_body_weight_measurement,
@@ -21,7 +24,8 @@ def get_single_body_weight(body_weight_id: int, db: Session, current_user: user_
 
 def create_body_weight_measurement(body_weight_measure: BodyWeightMeasureCreate, db: Session,
                                    current_user: user_model.User):
-    # TODO validate BW > 0
+
+    _check_if_body_measurement_is_higher_than_0(body_weight_measure.weight_amount)
     return create_body_weight_measurement_in_db(db, current_user.user_id, body_weight_measure)
 
 
@@ -36,7 +40,7 @@ def update_body_measurement_weight_amount(body_weight_id: int, new_weight_amount
                                           db: Session, current_user: user_model.User):
     _check_if_body_measurement_exist(body_weight_id, db, current_user)
 
-    # TODO validate BW > 0
+    _check_if_body_measurement_is_higher_than_0(new_weight_amount.weight_amount)
     body_measurement = get_body_weight_measurement(db, current_user.user_id, body_weight_id)
     body_measurement.weight_amount = new_weight_amount.weight_amount
     apply_changes_and_refresh_db(db, body_measurement)
@@ -59,4 +63,12 @@ def _check_if_body_measurement_exist(body_weight_id: int, db: Session, current_u
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=BODY_MEASUREMENT_DELETE_ERROR,
+        )
+
+
+def _check_if_body_measurement_is_higher_than_0(body_weight_amount: float):
+    if body_weight_amount <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=BODY_MEASUREMENT_TO_LOW_ERROR,
         )
