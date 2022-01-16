@@ -9,7 +9,7 @@ from repository.product_repository import (
     get_products_for_user_id, create_product_in_db, get_product_by_user_id,
     delete_product_by_id,
 )
-from repository.user_repository import apply_changes_and_refresh_db
+from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.product import ProductCreate, ProductNewProductName, ProductNewProductDate, ProductNewProductCalorificValue
 
 

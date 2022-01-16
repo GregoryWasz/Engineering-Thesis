@@ -10,7 +10,7 @@ from repository.post_repository import (
     get_posts_from_db, create_post_in_db, get_single_post_by_post_id_from_db,
     delete_post_from_db,
 )
-from repository.user_repository import apply_changes_and_refresh_db
+from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.post import PostCreate, PostNewTitle, PostNewText
 
 

@@ -7,7 +7,7 @@ from repository.body_weight_repository import (
     get_body_weight_measurements, get_body_weight_measurement,
     create_body_weight_measurement_in_db, delete_body_weight_measurement_from_db,
 )
-from repository.user_repository import apply_changes_and_refresh_db
+from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.body_weight_measure import BodyWeightMeasureCreate, BodyWeightMeasureNewWeight, BodyWeightMeasureNewDate
 
 

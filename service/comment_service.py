@@ -7,7 +7,7 @@ from repository.comment_repository import (
     create_comment_in_db, get_single_comment_by_comment_id_from_db,
     delete_comment_from_db,
 )
-from repository.user_repository import apply_changes_and_refresh_db
+from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.comment import (
     CommentCreate, CommentNewText,
 )

@@ -1,6 +1,7 @@
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
+import repository.common_database_functions
 from messages.messages import (
     USER_ALREADY_EXIST_ERROR, EMAIL_ALREADY_EXIST_ERROR, DATABASE_ERROR,
     PASSWORD_CHANGE_MESSAGE, USER_DELETE_MESSAGE, USERNAME_VALIDATION_ERROR, EMAIL_VALIDATION_ERROR,
@@ -39,7 +40,7 @@ def change_user_password(db: Session, current_user, new_password: user.UserUpdat
     hashed_new_password = hash_password(new_password.password)
     current_user.password = hashed_new_password
 
-    if user_repository.apply_changes_in_db(db):
+    if repository.common_database_functions.apply_changes_in_db(db):
         return PASSWORD_CHANGE_MESSAGE
 
     return _database_error()
@@ -50,20 +51,20 @@ def change_user_email(db: Session, current_user, new_email: user.UserUpdateEmail
     _validate_email(new_email.email)
 
     current_user.email = new_email.email
-    return user_repository.apply_changes_in_db(db)
+    return repository.common_database_functions.apply_changes_in_db(db)
 
 
 def change_user_username(db: Session, current_user, new_username: user.UserUpdateUsername):
     _check_if_username_exist(db, new_username.username)
 
     current_user.username = new_username.username
-    return user_repository.apply_changes_in_db(db)
+    return repository.common_database_functions.apply_changes_in_db(db)
 
 
 def change_user_calorie_limit(db: Session, current_user, new_calorie_limit: user.UserUpdateCalorieLimit):
     # TODO validate calorie limit > 0
     current_user.calorie_limit = new_calorie_limit.calorie_limit
-    return user_repository.apply_changes_in_db(db)
+    return repository.common_database_functions.apply_changes_in_db(db)
 
 
 # TODO change directory to common
