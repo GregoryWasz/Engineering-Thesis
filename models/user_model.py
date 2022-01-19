@@ -16,6 +16,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
+    calorie_limit = Column(Integer)
 
     achievements = relationship("Achievement", back_populates="owner")
     products = relationship("Product", back_populates="owner")

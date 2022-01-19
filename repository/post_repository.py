@@ -6,7 +6,7 @@ from schemas.post import PostCreate
 
 
 def get_posts_from_db(db: Session):
-    return db.query(post_model.Post).all()
+    return db.query(post_model.Post).order_by(post_model.Post.post_date.desc()).all()
 
 
 def create_post_in_db(post: PostCreate, db: Session, user_id: int):

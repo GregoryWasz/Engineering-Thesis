@@ -17,6 +17,10 @@ def get_single_comment_by_comment_id_from_db(comment_id: int, db: Session):
     return db.query(comment_model.Comment).filter(comment_model.Comment.comment_id == comment_id).first()
 
 
+def get_comments_by_post_id_from_db(post_id: int, db: Session):
+    return db.query(comment_model.Comment).filter(comment_model.Comment.post_id == post_id).all()
+
+
 def delete_comment_from_db(comment_id: int, db: Session):
     try:
         comment = get_single_comment_by_comment_id_from_db(comment_id, db)

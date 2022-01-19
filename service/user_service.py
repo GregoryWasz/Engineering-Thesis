@@ -1,19 +1,28 @@
+import re
+
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
+import repository.common_database_functions
 from messages.messages import (
     USER_ALREADY_EXIST_ERROR, EMAIL_ALREADY_EXIST_ERROR, DATABASE_ERROR,
-    PASSWORD_CHANGE_MESSAGE, USER_DELETE_MESSAGE,
+    PASSWORD_CHANGE_MESSAGE, USER_DELETE_MESSAGE, USERNAME_VALIDATION_ERROR, EMAIL_VALIDATION_ERROR,
+    PASSWORD_VALIDATION_ERROR,
 )
 from repository import user_repository
 from schemas import user
 from service.authentication import hash_password
+from service.common_error_functions import _raise_http_exception, _check_if_calorie_value_is_lower_than_0
 
 
 def create_user_service(user: user.UserCreate, db: Session):
+    _check_if_calorie_value_is_lower_than_0(user.calorie_limit)
+    _validate_username(user.username)
+    _validate_email(user.email)
+    _validate_password(user.password)
+
     _check_if_username_exist(db, user.username)
     _check_if_email_exist(db, user.email)
-    # TODO Validate inputs
 
     user.password = hash_password(user.password)
     return user_repository.create_user(db=db, user=user)
@@ -27,10 +36,12 @@ def delete_user_service(db: Session, current_user):
 
 
 def change_user_password(db: Session, current_user, new_password: user.UserUpdatePassword):
+    _validate_password(new_password.password)
+
     hashed_new_password = hash_password(new_password.password)
     current_user.password = hashed_new_password
 
-    if user_repository.apply_changes_in_db(db):
+    if repository.common_database_functions.apply_changes_in_db(db):
         return PASSWORD_CHANGE_MESSAGE
 
     return _database_error()
@@ -38,23 +49,24 @@ def change_user_password(db: Session, current_user, new_password: user.UserUpdat
 
 def change_user_email(db: Session, current_user, new_email: user.UserUpdateEmail):
     _check_if_email_exist(db, new_email.email)
+    _validate_email(new_email.email)
 
     current_user.email = new_email.email
-    return user_repository.apply_changes_in_db(db)
+    return repository.common_database_functions.apply_changes_in_db(db)
 
 
 def change_user_username(db: Session, current_user, new_username: user.UserUpdateUsername):
     _check_if_username_exist(db, new_username.username)
+    _validate_username(new_username.username)
 
     current_user.username = new_username.username
-    return user_repository.apply_changes_in_db(db)
+    return repository.common_database_functions.apply_changes_in_db(db)
 
 
-def _raise_http_exception(detail):
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail=detail,
-    )
+def change_user_calorie_limit(db: Session, current_user, new_calorie_limit: user.UserUpdateCalorieLimit):
+    _check_if_calorie_value_is_lower_than_0(new_calorie_limit.calorie_limit)
+    current_user.calorie_limit = new_calorie_limit.calorie_limit
+    return repository.common_database_functions.apply_changes_in_db(db)
 
 
 def _check_if_username_exist(db: Session, username: str):
@@ -72,3 +84,21 @@ def _database_error():
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         detail=DATABASE_ERROR,
     )
+
+
+def _validate_username(username: str):
+    if len(username) < 4 or len(username) > 16:
+        print(username)
+        print(len(username))
+        _raise_http_exception(USERNAME_VALIDATION_ERROR)
+
+
+def _validate_password(password: str):
+    if len(password) < 10 or len(password) > 24:
+        _raise_http_exception(PASSWORD_VALIDATION_ERROR)
+
+
+def _validate_email(email: str):
+    email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    if not re.fullmatch(email_regex, email):
+        _raise_http_exception(EMAIL_VALIDATION_ERROR)

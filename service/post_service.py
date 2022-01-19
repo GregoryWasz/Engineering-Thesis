@@ -1,17 +1,19 @@
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
-from messages.messages import PERMISSION_ERROR, POST_NOT_EXIST_ERROR, POST_DELETE_MESSAGE, DATABASE_ERROR
+from messages.messages import (
+    PERMISSION_ERROR, POST_NOT_EXIST_ERROR, POST_DELETE_MESSAGE, DATABASE_ERROR,
+)
 from models import user_model
+from repository.common_database_functions import apply_changes_and_refresh_db
 from repository.post_repository import (
     get_posts_from_db, create_post_in_db, get_single_post_by_post_id_from_db,
     delete_post_from_db,
 )
-from repository.user_repository import apply_changes_and_refresh_db
 from schemas.post import PostCreate, PostNewTitle, PostNewText
+from service.common_error_functions import _validate_text_length
 
 
-# TODO this not make a sense loop?
 def _raise_error_when_post_not_exist(post_id: int, db: Session):
     post = get_single_post_by_post_id_from_db(post_id, db)
 
@@ -39,19 +41,20 @@ def get_posts(db: Session):
 
 
 def create_single_post(post: PostCreate, db: Session, current_user: user_model.User):
+    _validate_text_length(post.post_title)
+    _validate_text_length(post.post_title)
+
     return create_post_in_db(post, db, current_user.user_id)
 
 
 def get_single_post(post_id: int, db: Session):
-    # TODO this not make a sense loop?
     _raise_error_when_post_not_exist(post_id, db)
-
     return get_single_post_by_post_id_from_db(post_id, db)
 
 
 def delete_post_with_id(post_id: int, db: Session, current_user: user_model.User):
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
-    # TODO delete all comments which belongs to post
+
     if delete_post_from_db(post_id, db):
         return POST_DELETE_MESSAGE
     return DATABASE_ERROR
@@ -59,6 +62,8 @@ def delete_post_with_id(post_id: int, db: Session, current_user: user_model.User
 
 def update_post_title(post_id: int, post_title: PostNewTitle, db: Session, current_user: user_model.User):
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
+
+    _validate_text_length(post_title.post_title)
 
     post = get_single_post_by_post_id_from_db(post_id, db)
     post.post_title = post_title.post_title
@@ -68,6 +73,8 @@ def update_post_title(post_id: int, post_title: PostNewTitle, db: Session, curre
 
 def update_post_text(post_id: int, post_text: PostNewText, db: Session, current_user: user_model.User):
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
+
+    _validate_text_length(post_text.post_text)
 
     post = get_single_post_by_post_id_from_db(post_id, db)
     post.post_text = post_text.post_text

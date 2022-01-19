@@ -13,7 +13,7 @@ from service.achievement_service import (
 achievement = APIRouter()
 
 
-@achievement.get("/", response_model=List[AchievementResponse])
+@achievement.get("", response_model=List[AchievementResponse])
 def get_user_achievements(db: Session = Depends(get_db),
                           current_user: user_model.User = Depends(get_current_user)):
     return get_all_user_achievements(db, current_user)

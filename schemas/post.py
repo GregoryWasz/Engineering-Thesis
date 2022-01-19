@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from schemas.user import UserBase
+
 
 class Post(BaseModel):
     post_title: str
@@ -24,6 +26,10 @@ class PostCheck(Post):
 class PostResp(Post):
     post_id: int
     user_id: int
+    post_creator: UserBase
+
+    class Config:
+        orm_mode = True
 
 
 class PostNewTitle(BaseModel):

@@ -1,5 +1,3 @@
-from typing import Any
-
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
@@ -27,22 +25,6 @@ def get_user_by_email(db: Session, email: str):
     return db.query(user_model.User).filter(user_model.User.email == email).first()
 
 
-# TODO change directory to common
-def apply_changes_in_db(db: Session):
-    try:
-        db.commit()
-    except SQLAlchemyError:
-        return False
-    return True
-
-
-# TODO change directory to common
-def apply_changes_and_refresh_db(db: Session, instance: Any):
-    apply_changes_in_db(db)
-    db.refresh(instance)
-
-
-# TODO change directory to common
 def delete_user(db: Session, current_user):
     try:
         db.delete(current_user)
