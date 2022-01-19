@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from schemas.user import UserBase
+
 
 class Comment(BaseModel):
     comment_text: str
@@ -13,6 +15,10 @@ class Comment(BaseModel):
 
 class CommentResp(Comment):
     comment_id: int
+    comment_creator: UserBase
+
+    class Config:
+        orm_mode = True
 
 
 class CommentCreate(Comment):

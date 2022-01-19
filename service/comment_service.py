@@ -11,7 +11,8 @@ from repository.common_database_functions import apply_changes_and_refresh_db
 from schemas.comment import (
     CommentCreate, CommentNewText,
 )
-from service.post_service import _raise_error_when_post_not_exist, _validate_text_length
+from service.post_service import _raise_error_when_post_not_exist
+from service.common_error_functions import _validate_text_length
 
 
 def _when_comment_not_exist_raise_error(comment):

@@ -38,13 +38,13 @@ def delete_post(post_id: int, db: Session = Depends(get_db),
     return delete_post_with_id(post_id, db, current_user)
 
 
-@posts.put("/text/{post_id:path}", response_model=PostResp)
+@posts.put("/title/{post_id:path}", response_model=PostResp)
 def change_post_title(post_id: int, post_title: PostNewTitle, db: Session = Depends(get_db),
                       current_user: user_model.User = Depends(get_current_user)):
     return update_post_title(post_id, post_title, db, current_user)
 
 
-@posts.put("/title/{post_id:path}", response_model=PostResp)
+@posts.put("/text/{post_id:path}", response_model=PostResp)
 def change_post_text(post_id: int, post_text: PostNewText, db: Session = Depends(get_db),
                      current_user: user_model.User = Depends(get_current_user)):
     return update_post_text(post_id, post_text, db, current_user)

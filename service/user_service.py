@@ -16,10 +16,8 @@ from service.common_error_functions import _raise_http_exception, _check_if_calo
 
 
 def create_user_service(user: user.UserCreate, db: Session):
-    if len(user.username) < 4:
-        _raise_http_exception(USERNAME_VALIDATION_ERROR)
-
     _check_if_calorie_value_is_lower_than_0(user.calorie_limit)
+    _validate_username(user.username)
     _validate_email(user.email)
     _validate_password(user.password)
 
@@ -59,6 +57,7 @@ def change_user_email(db: Session, current_user, new_email: user.UserUpdateEmail
 
 def change_user_username(db: Session, current_user, new_username: user.UserUpdateUsername):
     _check_if_username_exist(db, new_username.username)
+    _validate_username(new_username.username)
 
     current_user.username = new_username.username
     return repository.common_database_functions.apply_changes_in_db(db)
@@ -87,8 +86,15 @@ def _database_error():
     )
 
 
+def _validate_username(username: str):
+    if len(username) < 4 or len(username) > 16:
+        print(username)
+        print(len(username))
+        _raise_http_exception(USERNAME_VALIDATION_ERROR)
+
+
 def _validate_password(password: str):
-    if len(password) < 10 and len(password) < 24:
+    if len(password) < 10 or len(password) > 24:
         _raise_http_exception(PASSWORD_VALIDATION_ERROR)
 
 

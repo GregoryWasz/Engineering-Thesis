@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 
 from messages.messages import (
     PERMISSION_ERROR, POST_NOT_EXIST_ERROR, POST_DELETE_MESSAGE, DATABASE_ERROR,
-    TEXT_LENGTH_VALIDATION_ERROR,
 )
 from models import user_model
 from repository.common_database_functions import apply_changes_and_refresh_db
@@ -12,7 +11,7 @@ from repository.post_repository import (
     delete_post_from_db,
 )
 from schemas.post import PostCreate, PostNewTitle, PostNewText
-from service.common_error_functions import _raise_http_exception
+from service.common_error_functions import _validate_text_length
 
 
 def _raise_error_when_post_not_exist(post_id: int, db: Session):
@@ -49,6 +48,7 @@ def create_single_post(post: PostCreate, db: Session, current_user: user_model.U
 
 
 def get_single_post(post_id: int, db: Session):
+    _raise_error_when_post_not_exist(post_id, db)
     return get_single_post_by_post_id_from_db(post_id, db)
 
 
@@ -80,8 +80,3 @@ def update_post_text(post_id: int, post_text: PostNewText, db: Session, current_
     post.post_text = post_text.post_text
     apply_changes_and_refresh_db(db, post)
     return post
-
-
-def _validate_text_length(text):
-    if len(text) < 3:
-        _raise_http_exception(TEXT_LENGTH_VALIDATION_ERROR)
