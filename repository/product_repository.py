@@ -18,6 +18,14 @@ def get_products_for_user_id_with_date(current_date: date, user_id: int, db: Ses
 
 
 def create_product_in_db(product: ProductCreate, user_id: int, db: Session):
+    """
+    Tworzenie produktu w bazie danych.
+
+    :param product: Obiekt produktu
+    :param db: Sesja bazy danych
+    :param user_id: Identyfikator użytkownika
+    :return: Produkt
+    """
     db_product = product_model.Product(user_id=user_id, **product.__dict__)
     db.add(db_product)
     db.commit()
@@ -31,6 +39,14 @@ def get_product_by_user_id(product_id: int, user_id: int, db: Session):
 
 
 def delete_product_by_id(product_id: int, user_id: int, db: Session):
+    """
+    Usuwanie z bazy danych produktu.
+
+    :param db: Sesja bazy danych
+    :param product_id: Identyfikator produktu
+    :param user_id: Identyfikator użytkownika
+    :return: Wartość boolowska Prawda/Fałsz
+    """
     try:
         product = get_product_by_user_id(product_id, user_id, db)
         db.delete(product)

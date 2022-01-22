@@ -6,6 +6,9 @@ from db.database import Base
 
 
 class Achievement(Base):
+    """
+    Model dla bazy danych tworzący tabele Osiągnięcia, wraz z odpowiednimi polami i relacjami.
+    """
     __tablename__ = "achievements"
 
     achievement_id = Column(Integer, primary_key=True, index=True)

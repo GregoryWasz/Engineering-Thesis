@@ -6,9 +6,10 @@ from db import database
 from db.database import engine
 from routers import users, authentication, body_weights, products, achievements, posts, comments
 
-database.Base.metadata.create_all(bind=engine)
+database.Base.metadata.create_all(bind=engine)  # Utworzenie lub połączenie z bazą danych
 
-app = FastAPI()
+app = FastAPI()  # Utworzenie instancji aplikacji serwerowej
+# Włączenie odpowiednich punktów końcowych do aplikacji
 app.include_router(users.user_router, prefix='/users', tags=['users'])
 app.include_router(authentication.auth, prefix='/auth', tags=['authentication'])
 app.include_router(body_weights.body_weight, prefix='/body_weights', tags=['body_weights'])
@@ -27,7 +28,7 @@ origins = [
     "https://localhost:3000",
     "http://localhost:5000",
     "https://localhost:5000",
-]
+]  # Zdefiniowanie ścieżek
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,7 +36,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+)  # umożliwienie aplikacjom pod danymi adresami łączenia się z aplikacją serwerową
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=8000)
+    uvicorn.run(app, port=8000)  # uruchomienie aplikacji na podanym porcie adresu lokalnego

@@ -17,14 +17,40 @@ from service.common_error_functions import _raise_http_exception, _check_if_calo
 
 
 def get_all_products(current_user: user_model.User, db: Session):
+    """
+    Pobieranie listy wszystkich produktów danego użytkownika.
+
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Lista produktów
+    """
     return get_products_for_user_id(current_user.user_id, db)
 
 
 def get_daily_products(current_date: date, current_user: user_model.User, db: Session, ):
+    """
+    Pobieranie listy wszystkich produktów danego użytkownika w danym dniu.
+
+    :param current_date: 
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Lista produktów w danym dniu
+    """
     return get_products_for_user_id_with_date(current_date, current_user.user_id, db)
 
 
 def create_product(product: ProductCreate, current_user: user_model.User, db: Session):
+    """
+    Tworzenie produktu.
+    Jeśli nazwa produktu jest niepoprawna zwróć błąd.
+    Jeśli nowa wartość kaloryczna jest mniejsza niż 0 zwróć błąd.
+    Ustaw wartość mikrosekund w polu daty produktu na 0.
+
+    :param product: 
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: 
+    """
     product.product_date = product.product_date.replace(microsecond=0)
 
     _validate_product_name(product.product_name)
@@ -34,10 +60,27 @@ def create_product(product: ProductCreate, current_user: user_model.User, db: Se
 
 
 def get_single_product(id: int, current_user: user_model.User, db: Session):
+    """
+    Zwracanie pojedynczego produktu.
+    
+    :param id: Identyfikator produktu
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Produkt
+    """
     return get_product_by_user_id(id, current_user.user_id, db)
 
 
 def delete_single_product_by_id(id: int, current_user: user_model.User, db: Session):
+    """
+    Usuwanie produktu.
+    Jeśli usuwanie się nie powiedzie przekaż informacje o błędzie.
+    
+    :param id: Identyfikator produktu
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Potwierdzenie usunięcia
+    """
     if delete_product_by_id(id, current_user.user_id, db):
         return PRODUCT_DELETE_MESSAGE
 
@@ -45,6 +88,16 @@ def delete_single_product_by_id(id: int, current_user: user_model.User, db: Sess
 
 
 def update_product_name(id: int, product_name: ProductNewProductName, current_user: user_model.User, db: Session):
+    """
+    Zmiana nazwy produktu.
+    Jeśli nazwa produktu jest niepoprawna zwróć błąd.
+
+    :param id: Identyfikator produktu
+    :param product_name: Nowa nazwa produktu
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Zaktualizowany produkt
+    """
     _validate_product_name(product_name.product_name)
 
     product = get_product_by_user_id(id, current_user.user_id, db)
@@ -55,6 +108,15 @@ def update_product_name(id: int, product_name: ProductNewProductName, current_us
 
 
 def update_product_date(id: int, product_date: ProductNewProductDate, current_user: user_model.User, db: Session):
+    """
+    Zmiana daty dodania produktu.
+    
+    :param id: Identyfikator produktu
+    :param product_date: Nowa data produktu
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Zaktualizowany produkt
+    """
     product = get_product_by_user_id(id, current_user.user_id, db)
     product.product_date = product_date.product_date
     apply_changes_and_refresh_db(db, product)
@@ -64,6 +126,16 @@ def update_product_date(id: int, product_date: ProductNewProductDate, current_us
 
 def update_product_calorific_value(id: int, product_calorific_value: ProductNewProductCalorificValue,
                                    current_user: user_model.User, db: Session):
+    """
+    Zmiana wartości kalorycznej produktu.
+    Jeśli nowa wartość kaloryczna jest mniejsza niż 0 zwróć błąd.
+    
+    :param id: Identyfikator produktu
+    :param product_calorific_value: Nowa wartośc kaloryczna produktu
+    :param current_user: Użytkownik 
+    :param db: Sesja bazy danych 
+    :return: Zaktualizowany produkt
+    """
     _check_if_calorie_value_is_lower_than_0(product_calorific_value.product_calorific_value)
 
     product = get_product_by_user_id(id, current_user.user_id, db)
@@ -73,6 +145,12 @@ def update_product_calorific_value(id: int, product_calorific_value: ProductNewP
     return product
 
 
-def _validate_product_name(product_name):
+def _validate_product_name(product_name: str):
+    """
+    Walidacja długości nazwy produktu
+    
+    :param product_name: Nazwa produktu
+    :return: None
+    """
     if len(product_name) < 4:
         _raise_http_exception(PRODUCT_NAME_VALIDATION_ERROR)

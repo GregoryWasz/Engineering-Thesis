@@ -6,6 +6,9 @@ from db.database import Base
 
 
 class Product(Base):
+    """
+    Model dla bazy danych tworzący tabele Produkty, wraz z odpowiednimi polami i relacjami.
+    """
     __tablename__ = "products"
 
     product_id = Column(Integer, primary_key=True, index=True)

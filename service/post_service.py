@@ -15,6 +15,13 @@ from service.common_error_functions import _validate_text_length
 
 
 def _raise_error_when_post_not_exist(post_id: int, db: Session):
+    """
+    Zwróć błąd jeśli wpis nie istnieje w bazie danych
+
+    :param post_id: Identyfikator wpisu 
+    :param db: Sesja bazy danych
+    :return: Wpis
+    """
     post = get_single_post_by_post_id_from_db(post_id, db)
 
     if not post:
@@ -27,6 +34,14 @@ def _raise_error_when_post_not_exist(post_id: int, db: Session):
 
 
 def _raise_error_when_user_is_not_post_owner(current_user_id: int, post_id: int, db: Session):
+    """
+    Zwróć błąd jeśli zalogowany użytkownik nie jest twórcą wpisu.
+
+    :param current_user_id: Identyfikator użytkownika
+    :param post_id: Identyfikator wpisu 
+    :param db: Sesja bazy danych
+    :return: None
+    """
     post = _raise_error_when_post_not_exist(post_id, db)
 
     if current_user_id != post.user_id:
@@ -37,10 +52,25 @@ def _raise_error_when_user_is_not_post_owner(current_user_id: int, post_id: int,
 
 
 def get_posts(db: Session):
+    """
+    Pobieranie listy wszystkich wpisów.
+
+    :param db: Sesja bazy danych
+    :return: Lista wpisów
+    """
     return get_posts_from_db(db)
 
 
 def create_single_post(post: PostCreate, db: Session, current_user: user_model.User):
+    """
+    Tworzenie wpisu.
+    Jeśli tekst lub tytuł wpisu jest za krótki zwróć błąd.
+
+    :param post: Wpis
+    :param db: Sesja bazy danych
+    :param current_user: Użytkownik
+    :return: Wpis
+    """
     _validate_text_length(post.post_title)
     _validate_text_length(post.post_title)
 
@@ -48,11 +78,28 @@ def create_single_post(post: PostCreate, db: Session, current_user: user_model.U
 
 
 def get_single_post(post_id: int, db: Session):
+    """
+    Pobieranie wpisu.
+    Jeśli wpis nie istnieje zwróć błąd.
+
+    :param post_id: Identyfikator wpisu 
+    :param db: Sesja bazy danych
+    :return: Wpis
+    """
     _raise_error_when_post_not_exist(post_id, db)
     return get_single_post_by_post_id_from_db(post_id, db)
 
 
 def delete_post_with_id(post_id: int, db: Session, current_user: user_model.User):
+    """
+    Usuwanie wpisu.
+    Jeśli zalogowany użytkownik nie jest twórcą wpisu zwróć błąd.
+
+    :param post_id: Identyfikator wpisu 
+    :param db: Sesja bazy danych
+    :param current_user: Użytkownik
+    :return: Potwierdzenie usunięcia
+    """
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
 
     if delete_post_from_db(post_id, db):
@@ -61,6 +108,17 @@ def delete_post_with_id(post_id: int, db: Session, current_user: user_model.User
 
 
 def update_post_title(post_id: int, post_title: PostNewTitle, db: Session, current_user: user_model.User):
+    """
+    Aktualizacja tytułu wpisu.
+    Jeśli tytuł wpisu jest zbyt krótki zwróć błąd.
+    Jeśli zalogowany użytkownik nie jest twórcą wpisu zwróć błąd.
+
+    :param post_id: Identyfikator wpisu 
+    :param post_title: Nowy tytuł wpisu
+    :param db: Sesja bazy danych
+    :param current_user: Użytkownik
+    :return: Wpis
+    """
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
 
     _validate_text_length(post_title.post_title)
@@ -72,6 +130,17 @@ def update_post_title(post_id: int, post_title: PostNewTitle, db: Session, curre
 
 
 def update_post_text(post_id: int, post_text: PostNewText, db: Session, current_user: user_model.User):
+    """
+    Aktualizacja tytułu wpisu.
+    Jeśli tekst wpisu jest zbyt krótki zwróć błąd.
+    Jeśli zalogowany użytkownik nie jest twórcą wpisu zwróć błąd.
+
+    :param post_id: Identyfikator wpisu 
+    :param post_text: Nowy tekst wpisu
+    :param db: Sesja bazy danych
+    :param current_user: Użytkownik
+    :return: Wpis
+    """
     _raise_error_when_user_is_not_post_owner(current_user.user_id, post_id, db)
 
     _validate_text_length(post_text.post_text)

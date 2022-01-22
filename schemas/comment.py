@@ -4,6 +4,10 @@ from pydantic import BaseModel
 
 from schemas.user import UserBase
 
+"""
+Obiekty transferu danych dla modelu komentarzy.
+"""
+
 
 class Comment(BaseModel):
     comment_text: str

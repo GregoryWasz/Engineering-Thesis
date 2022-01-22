@@ -2,6 +2,10 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+"""
+Obiekty transferu danych dla modelu pomiarów masy ciała.
+"""
+
 
 class BodyWeightMeasure(BaseModel):
     weight_amount: float

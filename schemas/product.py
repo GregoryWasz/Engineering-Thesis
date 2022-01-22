@@ -2,6 +2,10 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+"""
+Obiekty transferu danych dla modelu produktów.
+"""
+
 
 class Product(BaseModel):
     product_name: str

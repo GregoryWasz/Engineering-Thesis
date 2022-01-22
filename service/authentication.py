@@ -17,14 +17,35 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def hash_password(password):
+    """
+    Hashowanie hasła.
+
+    :param password: hasło
+    :return: Hash hasła
+    """
     return pwd_context.hash(password)
 
 
 def verify_password(plain_password, hashed_password):
+    """
+    Porównywanie haseł.
+
+    :param plain_password: hasło
+    :param hashed_password: hasło
+    :return: Wartość boolowska Prawda/Fałsz
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def authenticate_user(get_db, username: str, password: str):
+    """
+    Uwierzytelnianie użytkownika.
+
+    :param get_db: Sesja bazy danych
+    :param username: Nazwa użytkownika
+    :param password: Hasło użytkownika
+    :return: Any
+    """
     user = get_user(get_db, username)
     if not user:
         return False
@@ -34,6 +55,13 @@ def authenticate_user(get_db, username: str, password: str):
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    """
+    Utworzenie tokenu dostępowego dla aplikacji.
+
+    :param data: Data
+    :param expires_delta: Czas wygaśnięcia
+    :return: Token dostępowy do aplikacji
+    """
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -45,6 +73,14 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 
 def get_access_token(form_data: OAuth2PasswordRequestForm, db: Session):
+    """
+    Uwierzytelnienie użytkownika.
+    Utworzenie tokenu dostępowego.
+
+    :param form_data:
+    :param db: Sesja bazy danych
+    :return: Token dostępowy do aplikacji
+    """
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(

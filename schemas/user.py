@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 
+"""
+Obiekty transferu danych dla modelu użytkownika.
+"""
+
 
 class UserBase(BaseModel):
     user_id: int

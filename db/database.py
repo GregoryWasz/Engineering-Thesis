@@ -4,6 +4,9 @@ from sqlalchemy.orm import sessionmaker
 
 from config import DATABASE_URL
 
+"""
+Zapewnienie połączenia z bazą danych
+"""
 SQLALCHEMY_DATABASE_URL = DATABASE_URL
 
 engine = create_engine(

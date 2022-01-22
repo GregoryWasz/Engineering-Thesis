@@ -7,6 +7,9 @@ from db.database import Base
 
 
 class Comment(Base):
+    """
+    Model dla bazy danych tworzący tabele Komentarze, wraz z odpowiednimi polami i relacjami.
+    """
     __tablename__ = "comments"
 
     comment_id = Column(Integer, primary_key=True, index=True)

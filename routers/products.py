@@ -17,30 +17,69 @@ products = APIRouter()
 
 @products.get("", response_model=List[ProductWithId])
 def get_all_products(current_user: user_model.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda GET o adresie: "/products".
+
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Lista produktów
+    """
     return product_service.get_all_products(current_user, db)
 
 
 @products.get("/daily", response_model=List[ProductWithId])
 def get_daily_products(current_date: date, current_user: user_model.User = Depends(get_current_user),
                        db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda GET o adresie: "/products/daily".
+
+    :param current_date: Wybrany dzień
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Lista produktów dla danego dnia
+    """
     return product_service.get_daily_products(current_date, current_user, db)
 
 
 @products.post("", response_model=ProductWithId)
 def create_products(product: ProductCreate, current_user: user_model.User = Depends(get_current_user),
                     db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda POST o adresie: "/products".
+
+    :param product: 
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Utworzony produkt
+    """
     return product_service.create_product(product, current_user, db)
 
 
 @products.get("/{id:path}", response_model=ProductWithId)
 def get_product(id: int, current_user: user_model.User = Depends(get_current_user),
                 db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda GET o adresie: "/products/{id:path}".
+
+    :param id: Identyfikator produktu 
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Produkt
+    """
     return product_service.get_single_product(id, current_user, db)
 
 
 @products.delete("/{id:path}")
 def delete_product(id: int, current_user: user_model.User = Depends(get_current_user),
                    db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda DELETE o adresie: "/products/{id:path}".
+
+    :param id: Identyfikator produktu 
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Potwierdzenie usunięcia produktu
+    """
     return product_service.delete_single_product_by_id(id, current_user, db)
 
 
@@ -48,6 +87,15 @@ def delete_product(id: int, current_user: user_model.User = Depends(get_current_
 def update_product_name(id: int, product_name: ProductNewProductName,
                         current_user: user_model.User = Depends(get_current_user),
                         db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda PUT o adresie: "/products/name/{id:path}".
+
+    :param id: Identyfikator produktu 
+    :param product_name: 
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Zaktualizowany produkt
+    """
     return product_service.update_product_name(id, product_name, current_user, db)
 
 
@@ -55,6 +103,15 @@ def update_product_name(id: int, product_name: ProductNewProductName,
 def update_product_date(id: int, product_date: ProductNewProductDate,
                         current_user: user_model.User = Depends(get_current_user),
                         db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda PUT o adresie: "/products/date/{id:path}".
+
+    :param id: Identyfikator produktu 
+    :param product_date: 
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Zaktualizowany produkt
+    """
     return product_service.update_product_date(id, product_date, current_user, db)
 
 
@@ -62,4 +119,13 @@ def update_product_date(id: int, product_date: ProductNewProductDate,
 def update_product_calorific_value(id: int, product_calorific_value: ProductNewProductCalorificValue,
                                    current_user: user_model.User = Depends(get_current_user),
                                    db: Session = Depends(get_db)):
+    """
+    Tworzenie punktu końcowego metoda PUT o adresie: "/products/calorific_value/{id:path}".
+
+    :param id: Identyfikator produktu 
+    :param product_calorific_value: 
+    :param current_user: Użytkownik  
+    :param db: Sesja bazy danych  
+    :return: Zaktualizowany produkt
+    """
     return product_service.update_product_calorific_value(id, product_calorific_value, current_user, db)

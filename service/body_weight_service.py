@@ -15,20 +15,53 @@ from schemas.body_weight_measure import BodyWeightMeasureCreate, BodyWeightMeasu
 
 
 def get_all_body_weights(db: Session, current_user: user_model.User):
+    """
+    Pobieranie listy pomiarów masy ciała.
+
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: Lista pomiarów masy ciała
+    """
     return get_body_weight_measurements(db, current_user.user_id)
 
 
 def get_single_body_weight(body_weight_id: int, db: Session, current_user: user_model.User):
+    """
+    Pobieranie pomiaru masy ciała.
+
+    :param body_weight_id: Identyfikator pomiaru masy ciała
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: Pomiar masy ciała
+    """
     return get_body_weight_measurement(db, current_user.user_id, body_weight_id)
 
 
 def create_body_weight_measurement(body_weight_measure: BodyWeightMeasureCreate, db: Session,
                                    current_user: user_model.User):
+    """
+    Tworzenie pomiaru masy ciała.
+    Jeżeli pomiar masy ciała jest mniejszy niż 0 zwróć błąd.
+
+    :param body_weight_measure: 
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: Pomiar masy ciała
+    """
     _check_if_body_measurement_is_higher_than_0(body_weight_measure.weight_amount)
     return create_body_weight_measurement_in_db(db, current_user.user_id, body_weight_measure)
 
 
 def delete_body_weight_measurement(body_weight_id: int, db: Session, current_user: user_model.User):
+    """
+    Usuwanie pomiaru masy ciała.
+    Jeżeli pomiar masy ciała nie istnieje w bazie danych zwróć błąd.
+
+    :param body_weight_id: Identyfikator pomiaru masy ciała 
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: Potwierdzenie usunięcia
+    """
     _check_if_body_measurement_exist(body_weight_id, db, current_user)
 
     if delete_body_weight_measurement_from_db(db, current_user.user_id, body_weight_id):
@@ -37,9 +70,20 @@ def delete_body_weight_measurement(body_weight_id: int, db: Session, current_use
 
 def update_body_measurement_weight_amount(body_weight_id: int, new_weight_amount: BodyWeightMeasureNewWeight,
                                           db: Session, current_user: user_model.User):
-    _check_if_body_measurement_exist(body_weight_id, db, current_user)
+    """
+    Aktualizacja wartości pomiaru masy ciała.
+    Jeżeli pomiar masy ciała nie istnieje w bazie danych zwróć błąd.
+    Jeżeli pomiar masy ciała jest mniejszy niż 0 zwróć błąd.
 
+    :param body_weight_id: Identyfikator pomiaru masy ciała 
+    :param new_weight_amount: 
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: Zaktualizowany pomiar masy ciała
+    """
+    _check_if_body_measurement_exist(body_weight_id, db, current_user)
     _check_if_body_measurement_is_higher_than_0(new_weight_amount.weight_amount)
+
     body_measurement = get_body_weight_measurement(db, current_user.user_id, body_weight_id)
     body_measurement.weight_amount = new_weight_amount.weight_amount
     apply_changes_and_refresh_db(db, body_measurement)
@@ -49,6 +93,16 @@ def update_body_measurement_weight_amount(body_weight_id: int, new_weight_amount
 
 def update_body_measurement_date(body_weight_id: int, new_date: BodyWeightMeasureNewDate, db: Session,
                                  current_user: user_model.User):
+    """
+    Aktualizacja daty pomiaru masy ciała.
+    Jeżeli pomiar masy ciała jest mniejszy niż 0 zwróć błąd.
+
+    :param body_weight_id: Identyfikator pomiaru masy ciała 
+    :param new_date: Nowa data
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: Zaktualizowany pomiar masy ciała
+    """
     _check_if_body_measurement_exist(body_weight_id, db, current_user)
 
     body_measurement = get_body_weight_measurement(db, current_user.user_id, body_weight_id)
@@ -58,6 +112,15 @@ def update_body_measurement_date(body_weight_id: int, new_date: BodyWeightMeasur
 
 
 def _check_if_body_measurement_exist(body_weight_id: int, db: Session, current_user: user_model.User):
+    """
+    Sprawdzenie czy pomiar istnieje w bazie danych.
+    Jeśli nie zwróć błąd.
+
+    :param body_weight_id: Identyfikator pomiaru masy ciała 
+    :param db: Sesja bazy danych 
+    :param current_user: Użytkownik 
+    :return: None
+    """
     if not get_body_weight_measurement(db, current_user.user_id, body_weight_id):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -66,6 +129,13 @@ def _check_if_body_measurement_exist(body_weight_id: int, db: Session, current_u
 
 
 def _check_if_body_measurement_is_higher_than_0(body_weight_amount: float):
+    """
+    Sprawdzenie czy wartosc pomiaru jest większa niż zero.
+    Jeśli nie zwróć błąd.
+
+    :param body_weight_amount: Wartość 
+    :return: None
+    """
     if body_weight_amount <= 0:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -7,6 +7,9 @@ from db.database import Base
 
 
 class Post(Base):
+    """
+    Model dla bazy danych tworzący tabele Wpisy, wraz z odpowiednimi polami i relacjami.
+    """
     __tablename__ = "posts"
 
     post_id = Column(Integer, primary_key=True, index=True)

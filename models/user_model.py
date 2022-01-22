@@ -10,6 +10,9 @@ from db.database import Base
 
 
 class User(Base):
+    """
+    Model dla bazy danych tworzący tabele Użytkownicy, wraz z odpowiednimi polami i relacjami.
+    """
     __tablename__ = "users"
 
     user_id = Column(Integer, primary_key=True, index=True)

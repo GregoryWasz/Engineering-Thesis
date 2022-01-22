@@ -2,6 +2,10 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+"""
+Obiekty transferu danych dla tokenu uwierzytelniającego użytkownika.
+"""
+
 
 class Token(BaseModel):
     access_token: str

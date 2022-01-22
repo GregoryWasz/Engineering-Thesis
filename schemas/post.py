@@ -4,6 +4,10 @@ from pydantic import BaseModel
 
 from schemas.user import UserBase
 
+"""
+Obiekty transferu danych dla modelu wpisów.
+"""
+
 
 class Post(BaseModel):
     post_title: str

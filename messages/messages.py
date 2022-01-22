@@ -1,3 +1,7 @@
+"""
+Wiadomości wysyłane do użytkownika
+"""
+
 MESSAGE = 'Message'
 ERROR = 'Error'
 
