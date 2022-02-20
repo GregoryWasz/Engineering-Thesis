@@ -11,3 +11,11 @@ class NewAdminCredentials(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class NewUserPassword(BaseModel):
+    username: str
+    password: str
+
+    class Config:
+        orm_mode = True
