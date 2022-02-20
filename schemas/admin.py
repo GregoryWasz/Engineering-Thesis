@@ -14,7 +14,7 @@ class NewAdminCredentials(BaseModel):
 
 
 class NewUserPassword(BaseModel):
-    username: str
+    email: str
     password: str
 
     class Config:

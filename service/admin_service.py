@@ -8,7 +8,7 @@ from models.user_model import User
 from repository.comment_repository import delete_comment_from_db
 from repository.post_repository import delete_post_from_db
 from repository.ticket_repository import delete_ticket_from_db
-from repository.user_repository import get_user
+from repository.user_repository import get_user, get_user_by_email
 from schemas.admin import NewAdminCredentials, NewUserPassword
 from service.authentication import hash_password
 from service.user_service import _validate_password
@@ -58,7 +58,7 @@ def change_user_password(newUserPassword: NewUserPassword, db: Session, current_
     :return: Wiadomość o promocji do roli administratora
     """
     _check_admin_role(current_user)
-    user = get_user(db, newUserPassword.username)
+    user = get_user_by_email(db, newUserPassword.email)
 
     if not user:
         raise HTTPException(

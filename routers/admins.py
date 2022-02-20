@@ -38,7 +38,7 @@ def admin_change_user_password(newUserPassword: NewUserPassword, db: Session = D
     return change_user_password(newUserPassword, db, current_user)
 
 
-@admins.delete("/{post_id:path}")
+@admins.delete("/post/{post_id:path}")
 def admin_delete_post(post_id: int, db: Session = Depends(get_db),
                       current_user: user_model.User = Depends(get_current_user)):
     """
@@ -52,7 +52,7 @@ def admin_delete_post(post_id: int, db: Session = Depends(get_db),
     return admin_delete_post_with_id(post_id, db, current_user)
 
 
-@admins.delete("/{comment_id:path}")
+@admins.delete("/comment/{comment_id:path}")
 def admin_delete_comment(comment_id: int, db: Session = Depends(get_db),
                          current_user: user_model.User = Depends(get_current_user)):
     """
@@ -66,7 +66,7 @@ def admin_delete_comment(comment_id: int, db: Session = Depends(get_db),
     return admin_delete_comment_with_id(comment_id, db, current_user)
 
 
-@admins.delete("/{ticket_id:path}")
+@admins.delete("/ticket/{ticket_id:path}")
 def admin_delete_ticket(ticket_id: int, db: Session = Depends(get_db),
                         current_user: user_model.User = Depends(get_current_user)):
     """
