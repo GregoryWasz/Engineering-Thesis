@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 
 import models.achievement_model  # noqa
@@ -20,6 +20,7 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
     calorie_limit = Column(Integer)
+    admin = Column(Boolean)
 
     achievements = relationship("Achievement", back_populates="owner")
     products = relationship("Product", back_populates="owner")

@@ -31,6 +31,7 @@ Utworzenie zabezpieczonego protokołem 0Auth2 punktu końcowego aplikacji do uwi
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """
+    Asynchroniczne pobranie użytkownika.
 
     :param token: token do uwierzytelniania użytkownika
     :param db: Sesja z bazą danych

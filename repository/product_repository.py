@@ -9,10 +9,25 @@ from schemas.product import ProductCreate
 
 
 def get_products_for_user_id(user_id: int, db: Session):
+    """
+    Pobranie produktów danego użytkownika.
+
+    :param user_id: Identyfikator użytkownika
+    :param db: Sesja bazy danych
+    :return: Lista Produktów
+    """
     return db.query(product_model.Product).filter(product_model.Product.user_id == user_id).all()
 
 
 def get_products_for_user_id_with_date(current_date: date, user_id: int, db: Session):
+    """
+    Pobranie produktów danego użytkownika z daną datą.
+
+    :param current_date: Data
+    :param user_id: Identyfikator użytkownika
+    :param db: Sesja bazy danych
+    :return: Lista Produktów
+    """
     return db.query(product_model.Product).filter(product_model.Product.user_id == user_id,
                                                   func.DATE(product_model.Product.product_date) == current_date).all()
 
@@ -34,6 +49,14 @@ def create_product_in_db(product: ProductCreate, user_id: int, db: Session):
 
 
 def get_product_by_user_id(product_id: int, user_id: int, db: Session):
+    """
+    Pobranie produktu danego użytkownika z danym identyfikatorem.
+
+    :param product_id: Identyfikator produktu
+    :param user_id: Identyfikator użytkownika
+    :param db: Sesja bazy danych
+    :return: Produkt
+    """
     return db.query(product_model.Product).filter(product_model.Product.user_id == user_id,
                                                   product_model.Product.product_id == product_id).first()
 

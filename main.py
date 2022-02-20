@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from db import database
 from db.database import engine
-from routers import users, authentication, body_weights, products, achievements, posts, comments
+from routers import users, authentication, body_weights, products, achievements, posts, comments, tickets, admins
 
 database.Base.metadata.create_all(bind=engine)  # Utworzenie lub połączenie z bazą danych
 
@@ -17,6 +17,8 @@ app.include_router(products.products, prefix='/products', tags=['products'])
 app.include_router(achievements.achievement, prefix='/achievements', tags=['achievements'])
 app.include_router(posts.posts, prefix='/posts', tags=['posts'])
 app.include_router(comments.comments, prefix='/comments', tags=['comments'])
+app.include_router(tickets.tickets, prefix='/tickets', tags=['tickets'])
+app.include_router(admins.admins, prefix='/admin', tags=['admin'])
 
 origins = [
     "http://localhost",

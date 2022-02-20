@@ -22,7 +22,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return get_access_token(form_data, db)
 
 
-@auth.get("/me", response_model=user.UserBase)
+@auth.get("/me", response_model=user.UserAuth)
 async def read_users_me(current_user: user = Depends(get_current_user)):
     """
     Tworzenie punktu końcowego metoda POST o adresie: "/auth/token".

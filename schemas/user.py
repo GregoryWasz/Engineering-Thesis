@@ -15,6 +15,10 @@ class UserBase(BaseModel):
         orm_mode = True
 
 
+class UserAuth(UserBase):
+    admin: bool
+
+
 class UserCreate(BaseModel):
     username: str
     email: str

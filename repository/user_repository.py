@@ -13,7 +13,7 @@ def create_user(db: Session, user: user.UserCreate):
     :param db: Sesja bazy danych
     :return: Produkt
     """
-    db_user = user_model.User(**user.__dict__)
+    db_user = user_model.User(**user.__dict__, admin=False)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
